@@ -105,7 +105,7 @@ exports.getUser = async (req, res, next) => {
     try {
         let obj = req.body;
         let [val, _] = await Post.getUser(obj);
-        res.status(200).json( val );
+        res.status(200).json( {val} );
     } catch (error) {
         console.log(error);
         next(error);
