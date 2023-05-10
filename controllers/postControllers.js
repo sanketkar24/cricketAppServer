@@ -114,9 +114,14 @@ exports.getUser = async (req, res, next) => {
 exports.checkEligible = async (req, res, next) => {
     try {
         let obj = req.body;
-        let check = await Post.checkEligible(obj);
-        console.log(check);
-        res.status(200).json({ check });
+        let [check,_] = await Post.checkEligible(obj);
+        console.log(check.length);
+        var invested;
+        if(check.length == 0)
+            invested = false;
+        else
+            invested = true;
+        res.status(200).json({ invested });
     } catch (error) {
         console.log(error);
         next(error);

@@ -87,15 +87,7 @@ class Post {
     }
     static checkEligible(obj) {
         let sql = `SELECT * FROM invest where email='${obj.email}' and match_id=${obj.match_id};`;
-        db.execute(sql).then(([row]) => {
-            console.log(row.length)
-            if (row.length == 0) {
-                return true;
-            }
-            return false;
-        }).catch(error => {
-            throw error;
-        })
+        return db.execute(sql)
     }
     static getUpcoming() {
         let sql = `SELECT t1.*, t2.team_name as t1_name, t3.team_name as t2_name,t2.players as t1_players, 
