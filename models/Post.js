@@ -191,7 +191,7 @@ class Post {
                     coinsInvested *= 2
                 }
                 else {
-                    coinsInvested *= -1;
+                    coinsInvested *= 0;
                 }
                 let updateCoins = `Update UserProfile set coins = coins + ${coinsInvested} where email = '${email}';`
                 db.execute(updateCoins).
