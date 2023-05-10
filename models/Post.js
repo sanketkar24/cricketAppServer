@@ -127,7 +127,7 @@ class Post {
     }
     static userLog(obj) {
         let email = obj.email;
-        let sql = `select t1.*, t2.date, t2.location, t3.team_name, t4.team_name, winner
+        let sql = `select t1.*, t2.date, t2.location, t3.team_name as team1_name, t4.team_name as team2_name, winner
         from invest t1, completed_matches t2, Team t3, Team t4
         where t1.match_id = t2.match_id
         and t3.team_id = team1_id
