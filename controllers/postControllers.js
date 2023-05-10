@@ -85,7 +85,7 @@ exports.reset = async (req, res, next) => {
 }
 exports.findPeopleByID = async (req, res, next) => {
     try {
-        let [val,_] = await Post.findByWork(req.body.work_id);
+        let [val, _] = await Post.findByWork(req.body.work_id);
         res.status(200).json({ val });
     } catch (error) {
         console.log(error);
@@ -105,7 +105,7 @@ exports.getUser = async (req, res, next) => {
     try {
         let obj = req.body;
         let [val, _] = await Post.getUser(obj);
-        res.status(200).json({val});
+        res.status(200).json({ val });
     } catch (error) {
         console.log(error);
         next(error);
@@ -113,8 +113,8 @@ exports.getUser = async (req, res, next) => {
 }
 exports.getUpcoming = async (req, res, next) => {
     try {
-        let [val,_] = await Post.getUpcoming();
-        res.status(200).json({val});
+        let [val, _] = await Post.getUpcoming();
+        res.status(200).json({ val });
     } catch (error) {
         console.log(error);
         next(error);
@@ -122,10 +122,39 @@ exports.getUpcoming = async (req, res, next) => {
 }
 exports.getCompleted = async (req, res, next) => {
     try {
-        let [val,_] = await Post.getCompleted();
-        res.status(200).json({val});
+        let [val, _] = await Post.getCompleted();
+        res.status(200).json({ val });
     } catch (error) {
         console.log(error);
         next(error);
     }
 }
+exports.invest = async (req, res, next) => {
+    try {
+        let val = await Post.invest(req.body);
+        let message = '';
+        if (val == true)
+            message = 'Investment Successful';
+        else
+            message = 'Investment Failed';
+        res.status(200).json({ success: val, message: message });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
+exports.result = async (req, res, next) => {
+    try {
+        let val = await Post.result(req.body);
+        let message = '';
+        if (val == true)
+            message = 'Investment Successful';
+        else
+            message = 'Investment Failed';
+        res.status(200).json({ success: val, message: message });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
+
