@@ -148,10 +148,10 @@ exports.userLog = async (req, res, next) => {
         let [arr,_] = await Post.userLog(req.body);
         arr.forEach(val => {
             if( val.winning_team == val.winner){
-                val.coins *= 2
+                val.won_coins = val.coins* 2
             }
             else
-                val.coins*=-1
+                val.won_coins=val.coins*-1
         });
         res.status(200).json({arr});
     } catch (error) {
