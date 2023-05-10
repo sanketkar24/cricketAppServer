@@ -7,6 +7,7 @@ const { checkToken } = require("../auth/token_validation");
 router.route("/register").post(postController.regUser);
 router.route("/getUser").post(postController.getUser)
 router.route("/getUpcoming").get(postController.getUpcoming)
+router.route("/getCompleted").get(postController.getCompleted)
 
 // router.route("/login").post(postController.login);
 // router.route("/user").get(postController.getUser);

@@ -120,3 +120,12 @@ exports.getUpcoming = async (req, res, next) => {
         next(error);
     }
 }
+exports.getCompleted = async (req, res, next) => {
+    try {
+        let [val,_] = await Post.getCompleted();
+        res.status(200).json({val});
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
