@@ -124,11 +124,11 @@ class Post {
         }
         return true;
     }
-    static result(obj) {
+    static async result(obj) {
         let match_id = obj.match_id;
         let winning_team = obj.winning_team;
         let description = obj.description;
-        let match_data;
+
         let insertResult = `INSERT INTO matchresult(match_id, match_winner) VALUES(${match_id}, ${winning_team});`
         db.execute(insertResult).then(([row]) => {
             // console.log(row)
@@ -136,50 +136,54 @@ class Post {
             console.log(error)
             return false;
         })
+        let match_data;
         let getMatchInfo = `select * from upcoming_matches where match_id = ${match_id};`
-        db.execute(getMatchInfo).then(([row]) => {
-            // console.log(row)
+        await db.execute(getMatchInfo).then(([row]) => {
+            console.log({'row':row})
             match_data = row[0];
+            console.log({'match_data':match_data})
+
+            let insertQuery = `INSERT INTO completed_matches(match_id, date, location, team1_id, team2_id, winner, description) VALUES(${match_id}, '${match_data.date}', '${match_data.location}', ${match_data.team1_id}, ${match_data.team2_id}, ${winning_team}, '${description}';`
+            db.execute(insertQuery).then(([row]) => {
+                // console.log(row)
+            }).catch(error => {
+                console.log(error)
+                return false;
+            })
         }).catch(error => {
             console.log(error)
             return false;
         })
-        console.log(match_data)
-        let insertQuery = `INSERT INTO completed_matches(match_id, date, location, team1_id, team2_id, winner, description) VALUES(${match_id}, '${match_data.date}', '${match_data.location}', ${match_data.team1_id}, ${match_data.team2_id}, ${match_data.score_1}, ${match_data.score_2}, ${match_data.toss_won}, ${winning_team}, '${description}';`
-        db.execute(insertQuery).then(([row]) => {
-            console.log(row)
-        }).catch(error => {
-            console.log(error)
-            return false;
-        })
-        let deleteQuery = `DELETE FROM UPCOMING_MATCHES where match_id = ${match_id};`
+        // console.log('match_data')
+
+        let deleteQuery = `DELETE FROM upcoming_matches where match_id = ${match_id};`
         db.execute(deleteQuery).then(([row]) => {
-            console.log(row)
+            // console.log(row)
         }).catch(error => {
             console.log(error)
             return false;
         })
         let investDetails = `select * from invest where match_id = ${match_id}`
         db.execute(investDetails).then(([row]) => {
-            console.log(row)
+            // console.log(row)
             for (let i = 0; i < row.length; i++) {
                 let email = row[i].email;
                 let winning_team_invest = row[i].winning_team;
                 let coinsInvested = row[i].coins;
-                if ( winning_team == winning_team_invest){
+                if (winning_team == winning_team_invest) {
                     coinsInvested *= 2
                 }
-                else{
-                    coinsInvested /= 2;
+                else {
+                    coinsInvested /= 0;
                 }
                 let updateCoins = `Update UserProfile set coins = coins + ${coinsInvested} where email = '${email}';`
                 db.execute(updateCoins).
-                then(([row]) => {
-                    console.log(row)
-                }).catch(error => {
-                    console.log(error)
-                    return false;
-                })
+                    then(([row]) => {
+                        console.log(row)
+                    }).catch(error => {
+                        console.log(error)
+                        return false;
+                    })
             }
         }).catch(error => {
             console.log(error)
@@ -187,23 +191,23 @@ class Post {
         })
 
         return true;
-    } 
-       
-        // let sql = 'DELETE * FROM upcoming_matches where match_id = ${match_id};'
+    }
 
-        // try {
-        //     db.execute(sql2);  
-        // } catch (error) {
-        //     console.log(error)
-        //     return false;
-        // } 
-        // try {
-        //      db.execute(sql);
-        // } catch (error) {
-        //     console.log(error)
-        //     return false;
-        // }
-        // return true;
+    // let sql = 'DELETE * FROM upcoming_matches where match_id = ${match_id};'
+
+    // try {
+    //     db.execute(sql2);  
+    // } catch (error) {
+    //     console.log(error)
+    //     return false;
+    // } 
+    // try {
+    //      db.execute(sql);
+    // } catch (error) {
+    //     console.log(error)
+    //     return false;
+    // }
+    // return true;
     // static findByName(name){
     //     let sql = `SELECT * FROM MovieDB
     //          where LOWER(original_title) LIKE LOWER('%${name}%');`;
