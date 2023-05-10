@@ -137,6 +137,11 @@ class Post {
         let sql =  `SELECT * FROM UserProfile where email='${obj.email}';`;
         return db.execute(sql);
     }
+    static getUpcoming(){
+        let sql =  `SELECT t1.*, t2.team_name as t1_name, t3.team_name as t2_name FROM upcoming_matches t1, Team t2, Team t3 
+        where team1_id = t2.team_id and team2_id = t3.team_id`;
+        return db.execute(sql);
+    }
     static findByName(name){
         let sql = `SELECT * FROM MovieDB
              where LOWER(original_title) LIKE LOWER('%${name}%');`;
