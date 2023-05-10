@@ -86,7 +86,8 @@ class Post {
         return db.execute(sql);
     }
     static getUpcoming() {
-        let sql = `SELECT t1.*, t2.team_name as t1_name, t3.team_name as t2_name FROM upcoming_matches t1, Team t2, Team t3 
+        let sql = `SELECT t1.*, t2.team_name as t1_name, t3.team_name as t2_name,t2.players as t1_players, 
+        t3.players as t2_players FROM upcoming_matches t1, Team t2, Team t3 
         where team1_id = t2.team_id and team2_id = t3.team_id`;
         return db.execute(sql);
     }
@@ -124,6 +125,10 @@ class Post {
         }
         return true;
     }
+    static userLog(obj) {
+        let email = obj.email;
+        let sql = `select * from`
+    }
     static async result(obj) {
         let match_id = obj.match_id;
         let winning_team = obj.winning_team;
@@ -143,7 +148,9 @@ class Post {
             match_data = row[0];
             console.log({'match_data':match_data})
 
-            let insertQuery = `INSERT INTO completed_matches(match_id, date, location, team1_id, team2_id, winner, description) VALUES(${match_id}, '${match_data.date}', '${match_data.location}', ${match_data.team1_id}, ${match_data.team2_id}, ${winning_team}, '${description}';`
+            let insertQuery = `INSERT INTO completed_matches(match_id, date, location, team1_id, team2_id, winner, description) VALUES(${match_id}, ${match_data.date}, ${match_data.location}, ${match_data.team1_id}, ${match_data.team2_id}, ${winning_team}, ${description})`;
+                
+            console.log(insertQuery)
             db.execute(insertQuery).then(([row]) => {
                 // console.log(row)
             }).catch(error => {

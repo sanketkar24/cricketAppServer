@@ -143,6 +143,20 @@ exports.invest = async (req, res, next) => {
         next(error);
     }
 }
+exports.userLog = async (req, res, next) => {
+    try {
+        let val = await Post.userLog(req.body);
+        let message = '';
+        if (val == true)
+            message = 'Investment Successful';
+        else
+            message = 'Investment Failed';
+        res.status(200).json({ success: val, message: message });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
 exports.result = async (req, res, next) => {
     try {
         let val = await Post.result(req.body);
