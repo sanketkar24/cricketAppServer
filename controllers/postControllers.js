@@ -111,6 +111,17 @@ exports.getUser = async (req, res, next) => {
         next(error);
     }
 }
+exports.checkEligible = async (req, res, next) => {
+    try {
+        let obj = req.body;
+        let check = await Post.checkEligible(obj);
+        console.log(check);
+        res.status(200).json({ check });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
 exports.getUpcoming = async (req, res, next) => {
     try {
         let [val, _] = await Post.getUpcoming();

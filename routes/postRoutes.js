@@ -6,6 +6,7 @@ const router = express.Router();
 const { checkToken } = require("../auth/token_validation");
 router.route("/register").post(postController.regUser);
 router.route("/getUser").post(postController.getUser)
+router.route("/checkEligible").post(postController.checkEligible)
 router.route("/getUpcoming").get(postController.getUpcoming)
 router.route("/getCompleted").get(postController.getCompleted)
 router.route("/invest").post(postController.invest)

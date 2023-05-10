@@ -85,6 +85,18 @@ class Post {
         let sql = `SELECT * FROM UserProfile where email='${obj.email}';`;
         return db.execute(sql);
     }
+    static checkEligible(obj) {
+        let sql = `SELECT * FROM invest where email='${obj.email}' and match_id=${obj.match_id};`;
+        db.execute(sql).then(([row]) => {
+            console.log(row.length)
+            if (row.length == 0) {
+                return true;
+            }
+            return false;
+        }).catch(error => {
+            throw error;
+        })
+    }
     static getUpcoming() {
         let sql = `SELECT t1.*, t2.team_name as t1_name, t3.team_name as t2_name,t2.players as t1_players, 
         t3.players as t2_players FROM upcoming_matches t1, Team t2, Team t3 
@@ -187,7 +199,7 @@ class Post {
                     coinsInvested *= 2
                 }
                 else {
-                    coinsInvested /= 0;
+                    coinsInvested *= -1;
                 }
                 let updateCoins = `Update UserProfile set coins = coins + ${coinsInvested} where email = '${email}';`
                 db.execute(updateCoins).
