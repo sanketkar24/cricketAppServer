@@ -145,13 +145,15 @@ exports.invest = async (req, res, next) => {
 }
 exports.userLog = async (req, res, next) => {
     try {
-        let val = await Post.userLog(req.body);
-        let message = '';
-        if (val == true)
-            message = 'Investment Successful';
-        else
-            message = 'Investment Failed';
-        res.status(200).json({ success: val, message: message });
+        let [arr,_] = await Post.userLog(req.body);
+        arr.forEach(val => {
+            if( val.winning_team == val.winner){
+                val.coins *= 2
+            }
+            else
+                val.coins*=-1
+        });
+        res.status(200).json({arr});
     } catch (error) {
         console.log(error);
         next(error);

@@ -127,7 +127,13 @@ class Post {
     }
     static userLog(obj) {
         let email = obj.email;
-        let sql = `select * from`
+        let sql = `select t1.*, t2.date, t2.location, t3.team_name, t4.team_name, winner
+        from invest t1, completed_matches t2, Team t3, Team t4
+        where t1.match_id = t2.match_id
+        and t3.team_id = team1_id
+        and t4.team_id = team2_id
+        and t1.email = '${email}';`;
+        return db.execute(sql);
     }
     static async result(obj) {
         let match_id = obj.match_id;
@@ -148,7 +154,7 @@ class Post {
             match_data = row[0];
             console.log({'match_data':match_data})
 
-            let insertQuery = `INSERT INTO completed_matches(match_id, date, location, team1_id, team2_id, winner, description) VALUES(${match_id}, ${match_data.date}, ${match_data.location}, ${match_data.team1_id}, ${match_data.team2_id}, ${winning_team}, ${description})`;
+            let insertQuery = `INSERT INTO completed_matches(match_id, date, location, team1_id, team2_id, winner, description) VALUES(${match_id}, '${match_data.date}', '${match_data.location}', ${match_data.team1_id}, ${match_data.team2_id}, ${winning_team}, '${description}')`;
                 
             console.log(insertQuery)
             db.execute(insertQuery).then(([row]) => {
