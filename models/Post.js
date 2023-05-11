@@ -85,6 +85,10 @@ class Post {
         let sql = `SELECT * FROM UserProfile where email='${obj.email}';`;
         return db.execute(sql);
     }
+    static leaderboard(obj) {
+        let sql = `SELECT * FROM UserProfile order by coins desc;`;
+        return db.execute(sql);
+    }
     static checkEligible(obj) {
         let sql = `SELECT * FROM invest where email='${obj.email}' and match_id=${obj.match_id};`;
         return db.execute(sql)

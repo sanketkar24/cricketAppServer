@@ -189,4 +189,13 @@ exports.result = async (req, res, next) => {
         next(error);
     }
 }
+exports.leaderboard = async (req, res, next) => {
+    try {
+        let [val,_] = await Post.leaderboard(req.body);
+        res.status(200).json({ val});
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
 
