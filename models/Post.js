@@ -162,7 +162,7 @@ class Post {
             match_data = row[0];
             console.log({'match_data':match_data})
 
-            let insertQuery = `INSERT INTO completed_matches(match_id, date, location, team1_id, team2_id, winner, description) VALUES(${match_id}, '${match_data.date}', '${match_data.location}', ${match_data.team1_id}, ${match_data.team2_id}, ${winning_team}, '${description}')`;
+            let insertQuery = `INSERT INTO completed_matches(match_id, date, location, team1_id, team2_id, toss_won, score_1, score_2, winner, description, team1_prob, team2_prob) VALUES(${match_id}, '${match_data.date}', '${match_data.location}', ${match_data.team1_id}, ${match_data.team2_id},${obj.toss_won},'${obj.score_1}', '${obj.score_2}', ${winning_team}, '${description}', '${match_data.team1_prob}', '${match_data.team2_prob}')`;
                 
             console.log(insertQuery)
             db.execute(insertQuery).then(([row]) => {
